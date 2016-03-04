@@ -3,7 +3,11 @@ package com.comeragh.examples.java_pipeline;
 import org.apache.commons.io.input.Tailer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import javax.jms.*;
+import javax.jms.Connection;
+import javax.jms.Session;
+import javax.jms.Destination;
+import javax.jms.MessageProducer;
+import org.apache.qpid.client.AMQConnection;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import java.util.Properties;
@@ -22,12 +26,19 @@ public class AMQPQueueSink implements Runnable
 
     AMQPQueueSink(String propfilename, BlockingQueue<String> in)
     {
+    	
+    	Connection conn = new AMQConnection("amqp://gues:guest@test/?brokerlist='tcp://localhost:5672'");
+    	Session sess = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+    	Desintation queue = new AMQAnyDestination("ADDR:message_queue; {create,always}");
+    	MessageProducer producer = session.createProducer(queue);
     	//host = h;
     	//port = p;
     	//vhost = vh;
     	//qname = q;
     	queue = in;
     	// TO DO
+    	
+    	
     }
 
     public void run()
