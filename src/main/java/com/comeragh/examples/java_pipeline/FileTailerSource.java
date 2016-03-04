@@ -3,37 +3,27 @@ package com.comeragh.examples.java_pipeline;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 import org.apache.commons.io.input.Tailer;
-import org.apache.commons.io.input.TailerListenerAdapter;
 import java.io.File;
 import java.util.concurrent.BlockingQueue;
 
-public class FileTailerSource extends TailerListenerAdapter
+public class FileTailerSource implements Runnable
 {
     private static final Logger logger = LogManager.getLogger(FileTailerSource.class);
 
-    private final BlockingQueue<String> queue;
-    private final String filename;
+    private final FileTailerListener listener;
+    private final Boolean end;
     private final File file;
-    private final Tailer tailer;
     
-    FileTailerSource(String fname, Boolean end, BlockingQueue<String> out)
+    FileTailerSource(String fname, Boolean fromEnd, BlockingQueue<String> out)
     {
-    	queue = out;
-    	filename = fname;
-    	file = new File(filename);
-    	tailer = Tailer.create(file, this, 100, end);
+    	end = fromEnd;
+    	listener = new FileTailerListener(fname, end, out);
+    	file = listener.getFile();
     }
-
-    public void handle(String line)
+    
+    public void run()
     {
-    	try
-    	{
-        	queue.put(line);
-        }
-    	catch (InterruptedException ex)
-    	{
-    		tailer.stop();
-    	}	
+    	Tailer.create(file, listener, 100, end);
     }
     
 	public static void main(String[] args)
