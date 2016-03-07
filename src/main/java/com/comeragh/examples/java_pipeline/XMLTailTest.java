@@ -8,9 +8,9 @@ import org.apache.logging.log4j.Logger;
 
 public class XMLTailTest
 {
-	private static final Logger logger = LogManager.getLogger(XMLTailTest.class);
-	private final LinkedBlockingQueue<String> fts2xap;
-	private final LinkedBlockingQueue<String> xap2sos;
+    private static final Logger logger = LogManager.getLogger(XMLTailTest.class);
+    private final LinkedBlockingQueue<String> fts2xap;
+    private final LinkedBlockingQueue<String> xap2sos;
     private final Runnable fts;
     private final Runnable xap;
     private final Runnable sos;
@@ -18,8 +18,8 @@ public class XMLTailTest
 
     XMLTailTest(String fname)
     {
-    	fts2xap = new LinkedBlockingQueue<String>();
-    	xap2sos = new LinkedBlockingQueue<String>();
+        fts2xap = new LinkedBlockingQueue<String>();
+        xap2sos = new LinkedBlockingQueue<String>();
         fts = new FileTailerSource(fname, true, fts2xap);
         xap = new XMLAssemblerPipe(fts2xap,xap2sos);
         sos = new StdoutSink(xap2sos);
@@ -34,9 +34,9 @@ public class XMLTailTest
     }
     
     public static void main(String[] args)
-	{
-		logger.info("Running main method");
+    {
+        logger.info("Running main method");
         XMLTailTest stt = new XMLTailTest("/Users/steve/test.log");
         stt.start();
-	}
+    }
 }

@@ -16,30 +16,30 @@ public class FileTailerListener extends TailerListenerAdapter
     
     FileTailerListener(String fname, Boolean end, BlockingQueue<String> out)
     {
-    	queue = out;
-    	filename = fname;
-    	file = new File(filename);
+        queue = out;
+        filename = fname;
+        file = new File(filename);
     }
 
     public File getFile()
     {
-    	return(file);
+        return(file);
     }
     
     public void handle(String line)
     {
-    	try
-    	{
-        	queue.put(line);
+        try
+        {
+            queue.put(line);
         }
-    	catch (InterruptedException ex)
-    	{
-    		Thread.currentThread().interrupt();
-    	}	
+        catch (InterruptedException ex)
+        {
+            Thread.currentThread().interrupt();
+        }    
     }
     
-	public static void main(String[] args)
-	{
-		logger.info("Running main method");
-	}
+    public static void main(String[] args)
+    {
+        logger.info("Running main method");
+    }
 }

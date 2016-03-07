@@ -16,18 +16,18 @@ public class FileTailerSource implements Runnable
     
     FileTailerSource(String fname, Boolean fromEnd, BlockingQueue<String> out)
     {
-    	end = fromEnd;
-    	listener = new FileTailerListener(fname, end, out);
-    	file = listener.getFile();
+        end = fromEnd;
+        listener = new FileTailerListener(fname, end, out);
+        file = listener.getFile();
     }
     
     public void run()
     {
-    	Tailer.create(file, listener, 100, end);
+        Tailer.create(file, listener, 100, end);
     }
     
-	public static void main(String[] args)
-	{
-		logger.info("Running main method");
-	}
+    public static void main(String[] args)
+    {
+        logger.info("Running main method");
+    }
 }

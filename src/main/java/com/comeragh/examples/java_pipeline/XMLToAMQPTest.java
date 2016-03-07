@@ -8,9 +8,9 @@ import org.apache.logging.log4j.Logger;
 
 public class XMLToAMQPTest
 {
-	private static final Logger logger = LogManager.getLogger(XMLToAMQPTest.class);
-	private final LinkedBlockingQueue<String> fts2xap;
-	private final LinkedBlockingQueue<String> xap2ams;
+    private static final Logger logger = LogManager.getLogger(XMLToAMQPTest.class);
+    private final LinkedBlockingQueue<String> fts2xap;
+    private final LinkedBlockingQueue<String> xap2ams;
     private final Runnable fts;
     private final Runnable xap;
     private final Runnable ams;
@@ -18,12 +18,12 @@ public class XMLToAMQPTest
 
     XMLToAMQPTest(String fname) throws Exception
     {
-    	fts2xap = new LinkedBlockingQueue<String>();
-    	xap2ams = new LinkedBlockingQueue<String>();
+        fts2xap = new LinkedBlockingQueue<String>();
+        xap2ams = new LinkedBlockingQueue<String>();
         fts = new FileTailerSource(fname, true, fts2xap);
-    	xap = new XMLAssemblerPipe(fts2xap,xap2ams);
-    	ams = new AMQPQueueSink(xap2ams);
-    	executor = Executors.newCachedThreadPool();
+        xap = new XMLAssemblerPipe(fts2xap,xap2ams);
+        ams = new AMQPQueueSink(xap2ams);
+        executor = Executors.newCachedThreadPool();
     }
     
     void start()
@@ -34,12 +34,12 @@ public class XMLToAMQPTest
     }
     
     public static void main(String[] args)
-	{
-		logger.info("Running main method");
-		XMLToAMQPTest stt = null;
+    {
+        logger.info("Running main method");
+        XMLToAMQPTest stt = null;
         try
         {
-        	stt = new XMLToAMQPTest("/Users/steve/test.log");
+            stt = new XMLToAMQPTest("/Users/steve/test.log");
         }
         catch (Exception e)
         {
@@ -47,7 +47,7 @@ public class XMLToAMQPTest
         }
         if (stt != null)
         {
-        	logger.info("Here we go!!");
+            logger.info("Here we go!!");
             stt.start();
         }
     }

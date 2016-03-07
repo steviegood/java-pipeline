@@ -33,65 +33,66 @@ public class AMQPQueueSink implements Runnable
 
     AMQPQueueSink(BlockingQueue<String> in) throws Exception
     {
-    	//Properties properties = new Properties();
+        //Properties properties = new Properties();
 
-    	inboundQueue = in;
-    	connection = new AMQConnection("amqp://guest:guest@AMQPQueueSink/bdb?brokerlist='tcp://localhost:5672'");
-    	session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-    	//outboundQueue = new AMQAnyDestination("ADDR:message_queue; {create,always}");
-    	outboundQueue = new AMQAnyDestination("test_queue");
-    	producer = session.createProducer(outboundQueue);
-    	//host = h;
-    	//port = p;
-    	//vhost = vh;
-    	//qname = q;
-    	//queue = in;
-    	// TO DO
+        inboundQueue = in;
+        connection = new AMQConnection("amqp://guest:guest@AMQPQueueSink/bdb?brokerlist='tcp://localhost:5672'");
+        session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+        //outboundQueue = new AMQAnyDestination("ADDR:message_queue; {create,always}");
+        outboundQueue = new AMQAnyDestination("test_queue");
+        producer = session.createProducer(outboundQueue);
+        //host = h;
+        //port = p;
+        //vhost = vh;
+        //qname = q;
+        //queue = in;
+        // TO DO
     }
 
     public void run()
     {
-    	while(!Thread.currentThread().isInterrupted())
-    	{
-    		String s = null;
-			try 
-			{
-				s = inboundQueue.poll(100, TimeUnit.MILLISECONDS);
-			}
-			catch (InterruptedException e)
-			{
-				return;
-			}
-    		if (s != null)
-    		{
-    			TextMessage message;
-				try 
-				{
-					message = session.createTextMessage(s);
-				}
-				catch (JMSException e)
-				{
-					e.printStackTrace();
-					return;
-				}
-    			try
-    			{
-    				logger.info("About to send message");
-					producer.send(message);
-					logger.info("Just sent message");
-				}
-    			catch (JMSException e) 
-    			{
-					e.printStackTrace();
-				    return;
-				}
-    		}
+        while(!Thread.currentThread().isInterrupted())
+        {
+            String s = null;
+            try 
+            {
+                s = inboundQueue.poll(100, TimeUnit.MILLISECONDS);
+            }
+            catch (InterruptedException e)
+            {
+                return;
+            }
+            if (s != null)
+            {
+                TextMessage message;
+                try 
+                {
+                    message = session.createTextMessage(s);
+                }
+                catch (JMSException e)
+                {
+                    e.printStackTrace();
+                    return;
+                }
+                try
+                {
+                    logger.info("About to send message");
+                    producer.send(message);
+                    logger.info("Just sent message");
+                }
+                catch (JMSException e) 
+                {
+                    e.printStackTrace();
+                    return;
+                }
+            }
 
-    	}
+        }
     }
     
     public static void main(String[] args)
-	{
-		logger.info("Running main method");
-	}
+    {
+        logger.info("Running main method");
+    }
+
 }

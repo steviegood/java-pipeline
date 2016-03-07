@@ -7,7 +7,7 @@ import java.util.concurrent.TimeUnit;
 
 public class LineCountStdoutSink implements Runnable
 {
-	private static final Logger logger = LogManager.getLogger(LineCountStdoutSink.class);
+    private static final Logger logger = LogManager.getLogger(LineCountStdoutSink.class);
 
     private final BlockingQueue<String> source;
     private final int logInterval;
@@ -29,34 +29,34 @@ public class LineCountStdoutSink implements Runnable
     
     public void run()
     {
-    	String s;
-    	lineCount = 0;
-    	linesCumulative = 0;
-    	while(!Thread.currentThread().isInterrupted())
-    	{
-    		try
-    		{
-    			s = source.poll(100, TimeUnit.MILLISECONDS);
-    		}
-    		catch (InterruptedException ex)
-    		{ 
-    		    return;
-    	    }
-    		if (s != null)
-    		{
-    			lineCount++;
-    			linesCumulative++;
-    			if (lineCount % logInterval == 0)
-    			{
-    				logger.info("Processed "+lineCount+" messages ("+linesCumulative+ "total)");
-    				lineCount = 0;
-    			}
-    		}
-    	}
+        String s;
+        lineCount = 0;
+        linesCumulative = 0;
+        while(!Thread.currentThread().isInterrupted())
+        {
+            try
+            {
+                s = source.poll(100, TimeUnit.MILLISECONDS);
+            }
+            catch (InterruptedException ex)
+            { 
+                return;
+            }
+            if (s != null)
+            {
+                lineCount++;
+                linesCumulative++;
+                if (lineCount % logInterval == 0)
+                {
+                    logger.info("Processed "+lineCount+" messages ("+linesCumulative+ "total)");
+                    lineCount = 0;
+                }
+            }
+        }
     }
     
-	public static void main(String[] args)
-	{
-		logger.info("Running main method");
-	}
+    public static void main(String[] args)
+    {
+        logger.info("Running main method");
+    }
 }
