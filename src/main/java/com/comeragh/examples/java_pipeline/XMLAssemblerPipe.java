@@ -42,13 +42,13 @@ public class XMLAssemblerPipe implements Runnable
     				int i = s.indexOf("<?xml");
     				if (i>=0)
     				{
-    					xml = xml+s.substring(i);
+    					xml = xml+s.substring(i)+"\n";
     					insideXml = true;
     				}
     			}
     			else
     			{
-    				xml = xml+s;
+    				xml = xml+s+"\n";
     				int i = s.indexOf("</FpML>");
     				if (i>=0)
     				{
